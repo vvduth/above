@@ -1,5 +1,6 @@
 import { ImageEdge } from './../schema.d';
 import { Product as ShopityProducts} from "../schema";
+import { Product } from '@common/types/product';
 
 function normalizeProductImages({edges}: {edges: Array<ImageEdge>}) {
     return edges.map(({node: {originalSrc: url, ...rest}}) => {
@@ -10,7 +11,7 @@ function normalizeProductImages({edges}: {edges: Array<ImageEdge>}) {
     })
 }
 
-export function normalizeProduct(productNode: ShopityProducts) : any{
+export function normalizeProduct(productNode: ShopityProducts) : Product{
     const {
         id, 
         title: name,
