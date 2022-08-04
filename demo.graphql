@@ -1,0 +1,5 @@
+query getAllProducts($first: Int = 250) {
+  products(first: $first) {
+    
+  }
+}
