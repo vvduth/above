@@ -1,3 +1,5 @@
+const{withFrameworkConfig} = require("./framework/common/config")
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -8,4 +10,6 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+module.exports = withFrameworkConfig(nextConfig)
+
+console.log("confige", JSON.stringify(module.exports, null, 2))
