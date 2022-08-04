@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+
+/assets/main_browser.css
+
 # testing
 /coverage
 

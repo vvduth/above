@@ -1,9 +1,12 @@
-import { FC } from 'react'
+import { FC } from "react";
+import s from "./Layout.module.css";
 
-const Layout:FC<any> = (props) => {
+const Layout: FC<any> = (props) => {
   return (
-    <div className='layout'>{props.children}</div>
-  )
-}
+    <div className={s.root}>
+      <main className="fit">{props.children}</main>
+    </div>
+  );
+};
 
-export default Layout
+export default Layout;
