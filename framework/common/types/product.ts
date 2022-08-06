@@ -1,6 +1,12 @@
+
 export interface ProductImages {
     url: string, 
     alt?: string
+}
+
+export interface ProductPrice {
+    value: number, 
+    currencyCode: "USD" |"EUR" | string
 }
 
 export interface Product {
@@ -9,5 +15,6 @@ export interface Product {
     description: string , 
     slug: string,
     path: string, 
-    images: ProductImages[]
+    images: ProductImages[],
+    price: ProductPrice, 
 }

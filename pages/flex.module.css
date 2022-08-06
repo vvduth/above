@@ -1,0 +1,20 @@
+.parent {
+    display: flex;
+    height: 1500px;
+    /* to horizontal as well, at first the flex is 0 */
+}
+
+.child {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+    margin: 1px;
+    /* display: inline-block; 
+    from ver to horiziontal */
+   
+}
+
+.child:first-child {
+    flex-basis: 400px;
+
+  }
