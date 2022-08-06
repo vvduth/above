@@ -1,12 +1,23 @@
 import {FC, ReactNode} from 'react'
 import s from "./Grid.module.css"
+import cn from 'classnames'
 interface PropType {
-    children: ReactNode 
+    children: ReactNode[] ; 
+    layout?: "A" | "B";
 }
-const Grid: FC<PropType> = (props:PropType) => {
+
+const Grid: FC<PropType> = ({children, layout = "A"} : PropType) => {
+
+  const rootClassName = cn(
+    s.root, 
+    {
+      [s.layoutA]: layout === 'A',
+      [s.layoutB]: layout === 'B'
+    }
+  )
   return (
-    <div className={s.root}>
-        {props.children}
+    <div className={rootClassName}>
+        {children}
     </div>
   )
 }
