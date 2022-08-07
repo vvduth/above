@@ -1,9 +1,10 @@
 import type { AppProps } from "next/app";
-import "@assets/main.css"
+import "@assets/main.css";
 
 import { FC } from "react";
+import UIProvider from "@components/ui/context";
 
-const Noop: FC<any> = ({children}) => <>{children}</>
+const Noop: FC<any> = ({ children }) => <>{children}</>;
 
 function MyApp({
   Component,
@@ -11,11 +12,11 @@ function MyApp({
 }: AppProps & { Component: { Layout: FC<any> } }) {
   const Layout = Component.Layout ?? Noop;
   return (
-    <>
+    <UIProvider>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </>
+    </UIProvider>
   );
 }
 
