@@ -1,3 +1,4 @@
+const getAllProductsPathQuery = `
 query getAllProductsPaths($first: Int = 250) {
     products(first: $first) {
       edges {
@@ -7,3 +8,7 @@ query getAllProductsPaths($first: Int = 250) {
       }
     }
   }
+
+`
+
+export default getAllProductsPathQuery 
