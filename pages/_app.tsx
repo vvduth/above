@@ -1,10 +1,14 @@
 import type { AppProps } from "next/app";
 import "@assets/main.css";
-
-import { FC } from "react";
+import 'keen-slider/keen-slider.min.css'
+import { FC, ReactNode } from "react";
 import UIProvider from "@components/ui/context";
 
-const Noop: FC<any> = ({ children }) => <>{children}</>;
+interface Props {
+  children: ReactNode | ReactNode[]
+}
+
+const Noop: FC<Props> = ({ children }:Props) => <>{children}</>;
 
 function MyApp({
   Component,
