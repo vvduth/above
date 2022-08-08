@@ -2,7 +2,10 @@
 export type ApitFetcherOptions = {
     url: string , 
     query: string, 
+    variables?: {[key: string]: string} | undefined
 }
+
+export type Variables = {[key:string]: string } ;
 export type  ApiFetcherResults<T> =  {
     data: T 
 }

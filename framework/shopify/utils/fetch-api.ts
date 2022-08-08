@@ -6,6 +6,7 @@ import {
 const fetchApi = async <T>({
   url,
   query,
+  variables
 }: ApitFetcherOptions): Promise<ApiFetcherResults<T>> => {
 
   const response = await fetch(url, {
@@ -15,6 +16,7 @@ const fetchApi = async <T>({
     },
     body: JSON.stringify({
       query: query,
+      variables
     }),
   });
 
