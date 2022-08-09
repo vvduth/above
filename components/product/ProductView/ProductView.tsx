@@ -1,28 +1,50 @@
+import cn from "classnames";
+import { FC, useState } from "react";
+import s from "./ProductView.module.css";
+import { Container, Button } from "@components/ui";
+import Image from "next/image";
+import { Product } from "@common/types/product";
+import { ProductSlider, Swatch } from "@components/product";
+import {Choices, getVariant} from '../helper'
+import { useUI } from "@components/ui/context";
+import { useAddItem } from "@common/cart";
 
-import cn from 'classnames'
-import { FC, useState } from 'react'
-import s from './ProductView.module.css'
-import { Container, Button } from '@components/ui'
-import Image from "next/image"
-import { Product } from '@common/types/product'
-import { ProductSlider, Swatch } from "@components/product"
 
 interface Props {
-  product: Product
+  product: Product;
 }
 
-const ProductView: FC<Props> = ({ product }) => {
-  const [ choices, setChoices ] = useState({})
 
-  console.log(choices)
+
+
+const ProductView: FC<Props> = ({ product }) => {
+  const [choices, setChoices] = useState<Choices>({} as any);
+  const {openSidebar} = useUI() ; 
+  const addItem = useAddItem() ;
+  console.log(choices);
+
+  const variant = getVariant(product, choices)
+
+  const addToCart = () => {
+    try {
+      const item = {
+        productId: product.id ,
+        variantId: variant?.id ,
+        variantOptions: variant?.options
+      }
+      const output = addItem(item)
+      alert(JSON.stringify(output))
+      openSidebar()
+    } catch (e) {
+
+    }
+  }
   return (
     <Container>
-      <div className={cn(s.root, 'fit', "mb-5")}>
-        <div className={cn(s.productDisplay, 'fit')}>
+      <div className={cn(s.root, "fit", "mb-5")}>
+        <div className={cn(s.productDisplay, "fit")}>
           <div className={s.nameBox}>
-            <h1 className={s.name}>
-              {product.name}
-            </h1>
+            <h1 className={s.name}>{product.name}</h1>
             <div className={s.price}>
               {product.price.value}
               {` `}
@@ -30,7 +52,7 @@ const ProductView: FC<Props> = ({ product }) => {
             </div>
           </div>
           <ProductSlider>
-            { product.images.map(image =>
+            {product.images.map((image) => (
               <div key={image.url} className={s.imageContainer}>
                 <Image
                   className={s.img}
@@ -41,47 +63,59 @@ const ProductView: FC<Props> = ({ product }) => {
                   quality="85"
                 />
               </div>
-            )}
+            ))}
           </ProductSlider>
         </div>
         <div className={s.sidebar}>
           <section>
-            { product.options.map(option =>
+            {product.options.map((option) => (
               <div key={option.id} className="pb-4">
                 <h2 className="uppercase font-medium">{option.displayName}</h2>
                 <div className="flex flex-row py-4">
-                  { option.values.map((optValue: { label: string | undefined; hexColor: string | undefined }) =>
-                    <Swatch
-                      key={`${option.id}-${optValue.label}`}
-                      label={optValue.label}
-                      color={optValue.hexColor}
-                      variant={option.displayName}
-                      onClick={() => {
-                        setChoices({
-                          ...choices,
-                          [option.displayName.toLowerCase()]: optValue.label?.toLowerCase()
-                        })
-                      }}
-                    />
+                  {option.values.map(
+                    (optValue: {
+                      label: string;
+                      hexColor: string | undefined;
+                    }) => {
+                      const activeChoice = choices[option.displayName.toLowerCase()]
+                      console.log(activeChoice)
+                      return (
+                        <Swatch
+                          key={`${option.id}-${optValue.label}`}
+                          label={optValue.label}
+                          color={optValue.hexColor}
+                          variant={option.displayName}
+                          active={optValue.label.toLowerCase() === activeChoice}
+                          onClick={() => {
+                            setChoices({
+                              ...choices,
+                              [option.displayName.toLowerCase()]:
+                                optValue.label.toLowerCase(),
+                            });
+                          }}
+                        />
+                      );
+                    }
                   )}
                 </div>
               </div>
-            )}
+            ))}
             <div className="pb-14 break-words w-full max-w-xl text-lg">
-              { product.description }
+              {product.description}
             </div>
           </section>
           <div>
             <Button
               className={s.button}
-              onClick={() => alert("adding to cart")}>
+              onClick={addToCart}
+            >
               Add to Cart
             </Button>
           </div>
         </div>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default ProductView
+export default ProductView;
