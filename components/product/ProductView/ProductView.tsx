@@ -5,40 +5,36 @@ import { Container, Button } from "@components/ui";
 import Image from "next/image";
 import { Product } from "@common/types/product";
 import { ProductSlider, Swatch } from "@components/product";
-import {Choices, getVariant} from '../helper'
+import { Choices, getVariant } from "../helper";
 import { useUI } from "@components/ui/context";
 import { useAddItem } from "@common/cart";
-
+import { useApiProvider } from "@common";
 
 interface Props {
   product: Product;
 }
 
-
-
-
 const ProductView: FC<Props> = ({ product }) => {
   const [choices, setChoices] = useState<Choices>({} as any);
-  const {openSidebar} = useUI() ; 
-  const addItem = useAddItem() ;
+  const data = useApiProvider();
+  const { openSidebar } = useUI();
+  const addItem = useAddItem();
   console.log(choices);
 
-  const variant = getVariant(product, choices)
+  const variant = getVariant(product, choices);
 
   const addToCart = () => {
     try {
       const item = {
-        productId: product.id ,
-        variantId: variant?.id ,
-        variantOptions: variant?.options
-      }
-      const output = addItem(item)
-      alert(JSON.stringify(output))
-      openSidebar()
-    } catch (e) {
-
-    }
-  }
+        productId: product.id,
+        variantId: variant?.id,
+        variantOptions: variant?.options,
+      };
+      const output = addItem(item);
+      alert(JSON.stringify(output));
+      openSidebar();
+    } catch (e) {}
+  };
   return (
     <Container>
       <div className={cn(s.root, "fit", "mb-5")}>
@@ -77,8 +73,9 @@ const ProductView: FC<Props> = ({ product }) => {
                       label: string;
                       hexColor: string | undefined;
                     }) => {
-                      const activeChoice = choices[option.displayName.toLowerCase()]
-                      console.log(activeChoice)
+                      const activeChoice =
+                        choices[option.displayName.toLowerCase()];
+                      console.log(activeChoice);
                       return (
                         <Swatch
                           key={`${option.id}-${optValue.label}`}
@@ -105,10 +102,7 @@ const ProductView: FC<Props> = ({ product }) => {
             </div>
           </section>
           <div>
-            <Button
-              className={s.button}
-              onClick={addToCart}
-            >
+            <Button className={s.button} onClick={addToCart}>
               Add to Cart
             </Button>
           </div>

@@ -1,3 +1,4 @@
+import { useAddItem } from '@common/cart';
 
 export type ApitFetcherOptions = {
     url: string , 
@@ -15,4 +16,10 @@ export interface APIConfig {
     fetch<T>(
         options: ApitFetcherOptions
     ): Promise<ApiFetcherResults<T>>
+}
+
+export interface ApiHooks {
+    cart: {
+        useAddItem: any
+    }
 }
