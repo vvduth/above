@@ -1,4 +1,4 @@
-import { APIConfig, Variables } from "@common/types/api";
+import { ApiConfig, Variables } from "@common/types/api";
 import getProductQuery from "@framework/utils/queries/get-product";
 import { Product as ShopifyProduct } from "@framework/schema";
 import { Product } from "@common/types/product";
@@ -13,13 +13,12 @@ type ReturnType = {
 }
 
 const getProduct = async (options: {
-  config: APIConfig;
+  config: ApiConfig;
   variables: Variables;
 }): Promise<ReturnType> => {
   const { config, variables } = options;
   const { data } = await config.fetch<FetchType>({
     query: getProductQuery,
-    url: config.apiUrl,
     variables,
   });
   

@@ -2,9 +2,12 @@ import { FC } from 'react'
 import { Bag, Cross } from '@components/icons'
 import cn from "classnames"
 import { useUI } from '@components/ui/context'
+import useCart from '@common/cart/use-cart'
 const CartSidebar: FC = () => {
   const isEmpty = true
   const ui = useUI() ;
+  const cart = useCart()
+  console.log(cart)
 
   
 

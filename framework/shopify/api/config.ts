@@ -1,19 +1,18 @@
-import { APIConfig } from "@common/types/api";
+import { ApiConfig } from "@common/types/api";
 import fetchApi from "@framework/utils/fetch-api";
 
 class Config {
-    private config: APIConfig ;
-    constructor(config: APIConfig) {
+    private config: ApiConfig ;
+    constructor(config: ApiConfig) {
         this.config = config 
     }
 
-    getConfig():APIConfig {
+    getConfig():ApiConfig {
         return this.config
     } 
 }
 
 const configWrapper = new Config({
-    apiUrl: "http://localhost:4000/graphql",
     fetch: fetchApi 
 })
 

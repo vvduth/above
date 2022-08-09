@@ -1,7 +1,12 @@
-import { handler } from "@framework/cart/use-add-item";
+import { useMutationHook } from './../utils/use-hook';
+
+import { useHook } from "@common/utils/use-hook";
 
 const useAddItem = () => {
-  return handler.useHook();
+  const hook = useHook((hooks) => {return hooks.cart.useAddItem})
+
+  
+  return useMutationHook({...hook})
 };
 
 export default useAddItem;
