@@ -1,29 +1,27 @@
-import React, { FC, Children, isValidElement, ReactNode, useState } from "react";
+import React, { FC, Children, isValidElement, ReactNode, useState, useEffect } from "react";
 import s from "./ProductSlider.module.css";
 import { useKeenSlider } from "keen-slider/react";
 import cn from "classnames";
 
 interface Props {
   children: ReactNode | ReactNode[];
+  
 }
 const ProductSlider: FC<Props> = ({ children }) => {
-  
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0)
   const [sliderRef, slider] = useKeenSlider({
     initial: 0,
     loop: true,
     slideChanged(s) {
-      console.log("changing to slide: ");
       setCurrentSlide(s.details().relativeSlide)
     },
-  });
+  })
 
   return (
     <div className={s.root}>
       <div
         ref={sliderRef as React.RefObject<HTMLDivElement>}
-        className="keen-slider h-full transition-opacity"
-      >
+        className="keen-slider h-full transition-opacity">
         <button
           onClick={slider?.prev}
           className={cn(s.leftControl, s.control)}
@@ -32,8 +30,7 @@ const ProductSlider: FC<Props> = ({ children }) => {
           onClick={slider?.next}
           className={cn(s.rightControl, s.control)}
         />
-
-        {Children.map(children, (child) => {
+        { Children.map(children, child => {
           if (isValidElement(child)) {
             return {
               ...child,
@@ -41,9 +38,9 @@ const ProductSlider: FC<Props> = ({ children }) => {
                 ...child.props,
                 className: `${
                   child.props.className ? `${child.props.className}` : ""
-                } keen-slider__slide`,
-              },
-            };
+                } keen-slider__slide`
+              }
+            }
 
             // return React.cloneElement(child, {
             //   className: `${
@@ -52,11 +49,12 @@ const ProductSlider: FC<Props> = ({ children }) => {
             // })
           }
 
-          return child;
-        })}
+          return child
+        }
+        )}
       </div>
     </div>
-  );
+  )
 };
 
 export default ProductSlider;
