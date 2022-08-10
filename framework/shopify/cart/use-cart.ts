@@ -32,7 +32,6 @@ export const handler = {
     }
 
     const cart = checkoutTocart(checkout)
-    debugger
     return cart
   },
   useHook: ({useData}: any) => {

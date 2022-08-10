@@ -68,10 +68,7 @@ const ProductView: FC<Props> = ({ product }) => {
                 <h2 className="uppercase font-medium">{option.displayName}</h2>
                 <div className="flex flex-row py-4">
                   {option.values.map(
-                    (optValue: {
-                      label: string;
-                      hexColor: string | undefined;
-                    }) => {
+                    (optValue) => {
                       const activeChoice =
                         choices[option.displayName.toLowerCase()];
                       console.log(activeChoice);
