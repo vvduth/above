@@ -6,9 +6,8 @@ import useCart from '@common/cart/use-cart'
 const CartSidebar: FC = () => {
   const isEmpty = true
   const ui = useUI() ;
-  const cart = useCart()
-  console.log(cart)
-
+  const {data} = useCart();
+  console.log(data)
   
 
   const rootClass = cn(

@@ -1,28 +1,29 @@
-import React, {FC} from 'react'
-import s from './Usernav.module.css'
-import Link from 'next/link'
-import { Bag as Cart, Heart } from '@components/icons'
-import { useUI } from '@components/ui/context'
+import React, { FC } from "react";
+import s from "./Usernav.module.css";
+import Link from "next/link";
+import { Bag as Cart, Heart } from "@components/icons";
+import { useUI } from "@components/ui/context";
+import useCart from "@framework/cart/use-cart";
 
 const Usernav: FC = () => {
-    const ui = useUI() ; 
+  const ui = useUI();
+  const { data } = useCart();
   return (
     <nav>
-        <ul className={s.list}>
-            <li className={s.item}>
-                <Cart onClick = {ui.openSidebar}/>
-            </li>
-            <li className={s.item}>
-                <Link href="/wishlist">
-                    <a>
-                        <Heart />
-                    </a>
-                </Link>
-                
-            </li>
-        </ul>
+      <ul className={s.list}>
+        <li className={s.item}>
+          <Cart onClick={ui.openSidebar} />
+        </li>
+        <li className={s.item}>
+          <Link href="/wishlist">
+            <a>
+              <Heart />
+            </a>
+          </Link>
+        </li>
+      </ul>
     </nav>
-  )
-}
+  );
+};
 
-export default Usernav
+export default Usernav;

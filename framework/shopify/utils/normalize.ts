@@ -1,68 +1,96 @@
-import { ImageEdge, CurrencyCode, MoneyV2, ProductOption,  } from "./../schema.d";
-import { Product as ShopityProducts , ProductVariantConnection, SelectedOption} from "../schema";
+import {
+  Checkout,
+  ImageEdge,
+  MoneyV2,
+  Product as ShopifyProducts,
+  ProductOption,
+  ProductVariantConnection,
+  SelectedOption
+} from "../schema"
 import { Product } from "@common/types/product";
+import { Cart } from "@common/types/cart";
 
-function normalizeProductImages({ edges }: { edges: Array<ImageEdge> }) {
-  return edges.map(({ node: { originalSrc: url, ...rest } }) => {
-    return {
+
+export const normalizeCart = (checkout: Checkout): Cart => {
+  return {
+    id: checkout.id,
+    createdAt: checkout.createdAt,
+    currency: {
+      code: checkout.totalPriceV2.currencyCode
+    },
+    taxesIncluded: checkout.taxesIncluded,
+    lineItemsSubtotalPrice: +checkout.subtotalPriceV2.amount,
+    totalPrice: checkout.totalPriceV2.amount,
+    lineItems: checkout.lineItems.edges.map(lineItemEdge => lineItemEdge.node),
+    discounts: []
+  }
+}
+
+const normalizeProductImages = ({edges}: {edges: Array<ImageEdge>}) =>
+  edges.map(({node: { originalSrc: url, ...rest}}) => ({
       url: `/images/${url}`,
-      ...rest,
-    };
-  });
-}
-const normalizeProductVariants = ({edges}:ProductVariantConnection) => {
-    return edges.map(({node}) => {
-        const {id, selectedOptions, sku, title, priceV2, compareAtPriceV2} =  node
-        return {
-            id , 
-            name: title, 
-            sku: sku || id , 
-            price: +priceV2.amount,
-            listPrice: +compareAtPriceV2?.amount,
-            requireShipping: true,
-            options: selectedOptions.map(({name, value}:SelectedOption ) => {
-                const option = normalizeProductOption({
-                    id, 
-                    name,
-                    values: [value]
-                })
-                return option; 
-            })
-        }
-    })
-}
+      ...rest }
+  ))
+
+const normalizeProductPrice = ({currencyCode, amount}: MoneyV2) => ({
+  value: +amount,
+  currencyCode
+})
 
 const normalizeProductOption = ({
   id,
   values,
-  name: displayName,
+  name: displayName
 }: ProductOption) => {
-    const normalized = {
-        id, displayName, 
-        values: values.map(value => {
-            let output : any = {
-                label: value, 
-            }
-            if (displayName.match(/colou?r/gi)) {
-                output = {
-                    ...output,
-                    hexColor: value 
-                }
-            }
-            return output
+
+  const normalized = {
+    id,
+    displayName,
+    values: values.map(value => {
+      let output: any = {
+        label: value
+      }
+
+      if (displayName.match(/colou?r/gi)) {
+        output = {
+          ...output,
+          hexColor: value
+        }
+      }
+
+      return output
+    })
+  }
+
+  return normalized
+}
+
+const normalizeProductVariants = ({ edges }: ProductVariantConnection) => {
+
+  return edges.map(({node}) => {
+    const { id, selectedOptions, sku, title, priceV2, compareAtPriceV2} = node
+
+    return {
+      id,
+      name: title,
+      sku: sku || id,
+      price: +priceV2.amount,
+      listPrice: +compareAtPriceV2?.amount,
+      requiresShipping: true,
+      options: selectedOptions.map(({name, value}: SelectedOption) => {
+        const option = normalizeProductOption({
+          id,
+          name,
+          values: [value]
         })
-    }    
-    return normalized
-};
 
-const normalizeProductPrice = ({ currencyCode, amount }: MoneyV2) => {
-  return {
-    value: +amount,
-    currencyCode,
-  };
-};
+        return option
+      })
+    }
+  })
+}
 
-export function normalizeProduct(productNode: ShopityProducts): Product {
+export function normalizeProduct(productNode: ShopifyProducts): Product {
   const {
     id,
     title: name,
@@ -74,7 +102,7 @@ export function normalizeProduct(productNode: ShopityProducts): Product {
     options,
     variants,
     ...rest
-  } = productNode;
+  } = productNode
 
   const product = {
     id,
@@ -85,14 +113,13 @@ export function normalizeProduct(productNode: ShopityProducts): Product {
     slug: handle.replace(/^\/+|\/+$/g, ""),
     images: normalizeProductImages(imageConnection),
     price: normalizeProductPrice(priceRange.minVariantPrice),
-    options: options
-      ? options
-          .filter((o) => o.name !== "Title")
-          .map((o) => normalizeProductOption(o))
-      : [],
-      variants : variants ? normalizeProductVariants(variants) : [],
-    ...rest,
-  };
+    options: options ?
+      options.filter(o => o.name !== "Title")
+             .map(o => normalizeProductOption(o)) : [],
+    variants: variants ?
+      normalizeProductVariants(variants) : [],
+    ...rest
+  }
 
-  return product;
+  return product
 }
