@@ -1,12 +1,11 @@
 import { ApiFetcher } from './../types/api';
 import { useState } from 'react';
 import useSWR from 'swr';
-import { ApiHooks } from '@common/types/hooks';
+import { ApiHooks, Hook, MutationHook } from '@common/types/hooks';
 import { useApiProvider } from "@common"
-import { MutationHook } from '@common/types/hooks';
 
 
-export const useHook = (fn: (apiHooks: ApiHooks)=> MutationHook) => {
+export const useHook = (fn: (apiHooks: ApiHooks)=> Hook) => {
     const  {hooks} = useApiProvider()
     return fn(hooks)
 }
@@ -42,7 +41,7 @@ const useData = (hook:any, fetcher: ApiFetcher, ctx:any) => {
         }
     }
     const response = useSWR(
-        hook.fetchOptions.query,
+        hook.fetcherOptions.query,
         hookFetcher,
         ctx.swrOptions
     )

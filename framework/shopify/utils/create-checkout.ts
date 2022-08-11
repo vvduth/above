@@ -12,13 +12,17 @@ import checkoutCreate from "./mutations/checkout-create"
 
 const createCheckout = async (
   fetch: ApiFetcher<{checkoutCreate: CheckoutCreatePayload}>
-): Promise<Maybe<Checkout | undefined>> => {
+): Promise<Checkout> => {
   
   const { data } = await fetch({
     query: checkoutCreate
   })
   
   const {checkout} = data.checkoutCreate
+
+  if (!checkout) {
+    throw new Error ("checkou can not be created")
+  }
   const checkoutId = checkout?.id
   if (checkoutId) {
     const options = {
