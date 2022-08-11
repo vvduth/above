@@ -32,3 +32,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+# Step1  : create hander for the hook that handler different functionality in shopify => cart 
+# Step 2: create the same file in common folder + add types in types.ts fiel in common floder
+# Step 3: add the new hook into shopify => hooks folder
+# Start import / export stuff in the new hook file and then use and use the new hook in the component mate
