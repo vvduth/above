@@ -3,5 +3,5 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Deploy on Vercel
 
 ## An e-commerce web app integrated with shopify
-* Come check iy out before my shopify trial expired [Click](https://above-v2-vvduth.vercel.app/)
+* Come check it out real quick before my shopify trial expired [Click](https://above-v2-vvduth.vercel.app/)
 
