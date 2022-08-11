@@ -76,7 +76,7 @@ const CartSidebar: FC = () => {
             </ul>
             <div className="flex justify-between border-t border-accents-3 py-3 font-bold mb-10">
               <span>Total</span>
-              <span>120$</span>
+              <span>{data?.lineItemsSubtotalPrice} {data?.currency.code}</span>
             </div>
           </div>
           <button

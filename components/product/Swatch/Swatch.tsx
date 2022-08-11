@@ -1,42 +1,55 @@
-import React, { FC, ReactNode } from "react";
-import s from "./Swatch.module.css";
-import { Check } from "@components/icons";
-import cn from "classnames";
-import {isDark} from "@lib/color"
+
+import { FC } from "react"
+import s from "./Swatch.module.css"
+import { Check } from '@components/icons'
+import cn from "classnames"
+import { isDark } from "@lib/color"
 
 interface Props {
-  color?: string;
-  label?: string;
-  active?: boolean;
-  variant?: "size" | "color" | string;
-  onClick: () => void;
+  size?: "sm" | "md" | "lg"
+  color?: string
+  label?: string
+  active?: boolean
+  variant?: "size" | "color" | string
+  onClick: () => void
 }
-const Swatch: FC<Props> = ({ color, label, variant, active, ...rest }) => {
-  label = label?.toLowerCase();
-  variant = variant?.toLowerCase();
-  const rootClassName = cn(s.root, {
-    [s.active]: active,
-    [s.color]: color,
-    [s.size]: variant === "size",
-    [s.dark]: color && isDark(color)
-  });
+
+
+const Swatch: FC<Props> = ({
+  color, label, variant, active,
+  size="md",
+  ...rest
+}:Props) => {
+
+  label = label?.toLowerCase()
+  variant = variant?.toLocaleLowerCase()
+
+  const rootClassName = cn(
+    s.root,
+    {
+      [s.active]: active,
+      [s.color]: color,
+      [s.size]: variant === "size",
+      [s.dark]: color && isDark(color),
+      [s.sm]: size === "sm"
+    }
+  )
+
   return (
-    <>
-      <button
-        style={color ? { backgroundColor: color } : {}}
-        className={rootClassName}
-        {...rest}
-      >
-        {variant === "color" && active && (
-          <span>
-            <Check />
-          </span>
-        )}
+    <button
+      style={color ? {backgroundColor: color} : {}}
+      className={rootClassName}
+      {...rest}
+    >
+      { variant === "color" && active &&
+        <span>
+          <Check />
+        </span>
+      }
+      { variant === "size" ? label : null }
+    </button>
+  )
+}
 
-        {variant === "size" ? label : null}
-      </button>
-    </>
-  );
-};
 
-export default Swatch;
+export default Swatch
